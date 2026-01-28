@@ -1,4 +1,4 @@
-export default interface ApoliceModel {
+export default interface Apolice {
     id: number;
     numero_apolice: number;
     valor_segurado: number;
