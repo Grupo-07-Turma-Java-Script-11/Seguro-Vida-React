@@ -8,6 +8,7 @@ import ListaCategoria from './pages/categoria/ListaCategoria';
 import FormCategoria from './pages/categoria/FormCategoria';
 import DeletarCategoria from './pages/categoria/DeletarCategoria';
 import ListaApolices from './components/apolice/listaApolices/ListaApolices';
+import Home from './pages/home/Home';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
       <BrowserRouter>
         <div className="min-h-[80vh]">
           <Routes>
+            <Route path='/' element={<Home />} />
             <Route path="/categorias" element={<ListaCategoria />} />
             <Route path="/categorias/cadastrar" element={<FormCategoria />} />
             <Route path="/categorias/editar/:id" element={<FormCategoria />} />

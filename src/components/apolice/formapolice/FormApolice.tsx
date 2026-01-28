@@ -1,9 +1,10 @@
-import React, { useEffect, useState, type ChangeEvent, type FormEvent } from 'react'
+import { useEffect, useState, type ChangeEvent, type FormEvent } from 'react'
 import { useNavigate, useParams } from 'react-router-dom';
 import type Apolice from '../../../models/Apolice';
 import { atualizar, buscar, cadastrar } from '../../../services/Service';
 import { ToastAlerta } from '../../../utils/ToastAlerta';
 import { ClipLoader } from 'react-spinners';
+import type { Categoria } from '../../../models/Categoria';
 
 function FormApolice() {
 
@@ -11,8 +12,8 @@ function FormApolice() {
 
     const [isLoading, setIsLoading] = useState<boolean>(false)
 
-    // const [categorias, setCategorias] = useState<Categoria[]>([])
-    // const [categoria, setCategoria] = useState<Categoria>({ id: 0, nome: '', descricao: '', })
+    const [categorias, setCategorias] = useState<Categoria[]>([])
+    const [categoria, setCategoria] = useState<Categoria>({ id: 0, nome: '', descricao: '', })
 
     const [apolice, setApolice] = useState<Apolice>({} as Apolice)
 
@@ -43,18 +44,18 @@ function FormApolice() {
     }, [id])
 
 
-    // useEffect(() => {
-    //     setApolice({
-    //         ...apolice,
-    //         categoria: categoria,
-    //     })
-    // }, [categoria])
+    useEffect(() => {
+        setApolice({
+            ...apolice,
+            categoria: categoria,
+        })
+    }, [categoria])
 
     function atualizarEstado(e: ChangeEvent<HTMLInputElement>) {
         setApolice({
             ...apolice,
             [e.target.name]: e.target.value,
-            // categoria: categoria,
+            categoria: categoria,
             // usuario: usuario,
         });
     }
@@ -87,7 +88,7 @@ function FormApolice() {
         retornar();
     }
 
-    //   const carregandocategoria = categoria.nome === '';
+    const carregandocategoria = categoria.nome === '';
 
     return (
         <div className="container flex flex-col mx-auto items-center">
@@ -145,7 +146,7 @@ function FormApolice() {
                         onChange={(e: ChangeEvent<HTMLInputElement>) => atualizarEstado(e)}
                     />
                 </div>
-                {/* <div className="flex flex-col gap-2">
+                <div className="flex flex-col gap-2">
                     <p>Categoria da Apolice</p>
                     <select name="categoria" id="categoria" className='border p-2 border-slate-800 rounded'
                         onChange={(e) => buscarApolicePorId(e.currentTarget.value)}
@@ -159,12 +160,12 @@ function FormApolice() {
                         ))}
 
                     </select>
-                </div> */}
+                </div>
                 <button
                     type='submit'
                     className='rounded disabled:bg-slate-200 bg-indigo-400 hover:bg-indigo-800
                                text-white font-bold w-1/2 mx-auto py-2 flex justify-center'
-                // disabled={carregandoTema}
+                    disabled={carregandocategoria}
                 >
                     {isLoading ?
                         <ClipLoader
