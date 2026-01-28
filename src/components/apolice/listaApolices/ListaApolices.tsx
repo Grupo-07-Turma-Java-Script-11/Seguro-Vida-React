@@ -6,29 +6,29 @@ import { ToastAlerta } from '../../../utils/ToastAlerta';
 import { SyncLoader } from 'react-spinners';
 import ItemApolice from '../itemapolice/ItemApolice';
 
-const navigate = useNavigate();
-
-const [isLoading, setIsLoading] = useState<boolean>(false)
-
-const [apolices, setApolices] = useState<Apolice[]>([])
-
-useEffect(() => {
-    buscarApolices();
-}, [apolices.length])
-
-async function buscarApolices() {
-    try {
-        setIsLoading(true);
-
-        await buscar('/apolices', setApolices);
-    } catch (erro: any) {
-        ToastAlerta("Erro ao buscar Apolices", "erro");
-    } finally {
-        setIsLoading(false);
-    }
-}
-
 function ListaApolices() {
+
+    const navigate = useNavigate();
+
+    const [isLoading, setIsLoading] = useState<boolean>(false)
+
+    const [apolices, setApolices] = useState<Apolice[]>([])
+
+    useEffect(() => {
+        buscarApolices();
+    }, [apolices.length])
+
+    async function buscarApolices() {
+        try {
+            setIsLoading(true);
+
+            await buscar('/apolices', setApolices);
+        } catch (erro: any) {
+            ToastAlerta("Erro ao buscar Apolices", "erro");
+        } finally {
+            setIsLoading(false);
+        }
+    }
     return (
         <>
             {isLoading && (
