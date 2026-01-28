@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import type Apolice from '../../../models/Apolice';
 import { buscar } from '../../../services/Service';
 import { ToastAlerta } from '../../../utils/ToastAlerta';
 import { SyncLoader } from 'react-spinners';
+import ItemApolice from '../itemapolice/ItemApolice';
 
 const navigate = useNavigate();
 
@@ -38,21 +39,23 @@ function ListaApolices() {
                     />
                 </div>
             )}
-            <div>
-                <div>
+            <div className="flex justify-center w-full my-4">
+                <div className="w-full">
                     {(!isLoading && apolices.length === 0) && (
                         <span className="text-3xl text-center my-8">
                             Nenhuma Apolice foi encontrada!
                         </span>
                     )}
 
-                    <div>
-                        {
-                            apolices.map(apolice) => (
-                        <CardApolice key={apolice.id} postagem={apolice} />
-                        ))
-                        }
-                    </div>
+                    <table className="w-full table-auto">
+                        <tbody>
+                            {
+                                apolices.map((apolice) => (
+                                    <ItemApolice key={apolice.id} apolice={apolice} />
+                                ))
+                            }
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </>

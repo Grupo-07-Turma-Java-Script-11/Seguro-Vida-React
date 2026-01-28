@@ -4,7 +4,7 @@ import viteLogo from '/vite.svg'
 import './App.css'
 import 'react-toastify/dist/ReactToastify.css';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import ListaApolices from './components/apolice/listaApolices/ListaApolices';
+import ListaApolices from './components/apolice/listaapolices/ListaApolices';
 import { ToastContainer } from 'react-toastify';
 
 function App() {

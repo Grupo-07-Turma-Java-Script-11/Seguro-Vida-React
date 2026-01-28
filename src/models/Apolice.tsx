@@ -5,5 +5,4 @@ export default interface Apolice {
     data_inicio: Date;
     data_fim: Date;
     // categoria: Categoria | null;
-    // usuario: Usuario | null;
 }
