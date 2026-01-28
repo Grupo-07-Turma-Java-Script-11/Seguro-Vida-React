@@ -11,7 +11,7 @@ function FormApolice() {
     const navigate = useNavigate();
     const { id } = useParams<{ id: string }>();
 
-    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [isLoading, setIsLoading] = useState(false);
 
     const [categorias, setCategorias] = useState<Categoria[]>([]);
     const [categoriaSelecionada, setCategoriaSelecionada] = useState<Categoria | null>(null);
@@ -25,18 +25,30 @@ function FormApolice() {
         categoria: null,
     });
 
+    /* =======================
+       BUSCAS
+    ======================= */
+
     async function buscarCategorias() {
         try {
             await buscar('/categorias', setCategorias);
-        } catch (error: any) {
+        } catch {
             ToastAlerta('Erro ao buscar categorias', 'erro');
         }
     }
 
     async function buscarApolicePorId(id: string) {
         try {
-            await buscar(`/apolices/${id}`, setApolice);
-        } catch (error: any) {
+            await buscar(`/apolices/${id}`, (data: Apolice) => {
+                setApolice({
+                    ...data,
+                    data_inicio: data.data_inicio?.split('T')[0],
+                    data_fim: data.data_fim?.split('T')[0],
+                });
+
+                setCategoriaSelecionada(data.categoria);
+            });
+        } catch {
             ToastAlerta('Erro ao buscar apólice', 'erro');
         }
     }
@@ -44,69 +56,93 @@ function FormApolice() {
     useEffect(() => {
         buscarCategorias();
 
-        if (id !== undefined) {
+        if (id) {
             buscarApolicePorId(id);
         }
     }, [id]);
 
-    useEffect(() => {
-        setApolice((prev) => ({
-            ...prev,
-            categoria: categoriaSelecionada,
-        }));
-    }, [categoriaSelecionada]);
+    /* =======================
+       HANDLERS
+    ======================= */
 
     function atualizarEstado(e: ChangeEvent<HTMLInputElement>) {
+        const { name, value } = e.target;
+
         setApolice({
             ...apolice,
-            [e.target.name]: e.target.value,
+            [name]: name === 'numero_apolice' || name === 'valor_segurado'
+                ? Number(value)
+                : value,
         });
     }
 
+    function selecionarCategoria(e: ChangeEvent<HTMLSelectElement>) {
+        const categoria = categorias.find(
+            c => c.id === Number(e.target.value)
+        ) || null;
+
+        setCategoriaSelecionada(categoria);
+
+        setApolice({
+            ...apolice,
+            categoria: categoria,
+        });
+    }
+
+    /* =======================
+       SUBMIT
+    ======================= */
+
     async function gerarNovaApolice(e: FormEvent<HTMLFormElement>) {
         e.preventDefault();
+
+        if (!categoriaSelecionada) {
+            ToastAlerta('Selecione uma categoria', 'erro');
+            return;
+        }
+
         setIsLoading(true);
 
         try {
-            if (id !== undefined) {
-                await atualizar('/apolices', apolice, setApolice);
+            const apoliceEnvio: Apolice = {
+                ...apolice,
+                categoria: categoriaSelecionada,
+            };
+
+            if (id) {
+                await atualizar(`/apolices/${id}`, apoliceEnvio, setApolice);
                 ToastAlerta('Apólice atualizada com sucesso!', 'sucesso');
             } else {
-                await cadastrar('/apolices', apolice, setApolice);
+                await cadastrar('/apolices', apoliceEnvio, setApolice);
                 ToastAlerta('Apólice cadastrada com sucesso!', 'sucesso');
             }
 
             navigate('/apolices');
 
-        } catch (error: any) {
+        } catch {
             ToastAlerta('Erro ao salvar a apólice', 'erro');
         } finally {
             setIsLoading(false);
         }
     }
 
-    function selecionarCategoria(e: ChangeEvent<HTMLSelectElement>) {
-        const categoria = categorias.find(
-            (c) => c.id === Number(e.target.value)
-        ) || null;
-
-        setCategoriaSelecionada(categoria);
-    }
-
-    const carregandoCategoria = !categoriaSelecionada;
+    /* =======================
+       RENDER
+    ======================= */
 
     return (
         <div className="container flex flex-col mx-auto items-center">
 
             <h1 className="text-4xl text-center my-8">
-                {id !== undefined ? 'Editar Apólice' : 'Cadastrar Apólice'}
+                {id ? 'Editar Apólice' : 'Cadastrar Apólice'}
             </h1>
 
             <form
                 className="flex flex-col w-1/2 gap-4"
                 onSubmit={gerarNovaApolice}
             >
-                {/* NUMERO APOLICE */}
+
+                {/* NÚMERO */}
                 <div className="flex flex-col gap-2">
                     <label>Número da Apólice</label>
                     <input
@@ -132,7 +168,7 @@ function FormApolice() {
                     />
                 </div>
 
-                {/* DATA INICIO */}
+                {/* DATA INÍCIO */}
                 <div className="flex flex-col gap-2">
                     <label>Data de Início</label>
                     <input
@@ -161,7 +197,6 @@ function FormApolice() {
                 {/* CATEGORIA */}
                 <div className="flex flex-col gap-2">
                     <label>Categoria da Apólice</label>
-
                     <select
                         className="border p-2 border-slate-800 rounded"
                         value={categoriaSelecionada?.id ?? ''}
@@ -172,7 +207,7 @@ function FormApolice() {
                             Selecione uma categoria
                         </option>
 
-                        {categorias.map((categoria) => (
+                        {categorias.map(categoria => (
                             <option key={categoria.id} value={categoria.id}>
                                 {categoria.nome}
                             </option>
@@ -183,16 +218,26 @@ function FormApolice() {
                 {/* BOTÃO */}
                 <button
                     type="submit"
-                    disabled={isLoading || carregandoCategoria}
+                    disabled={isLoading}
                     className="rounded disabled:bg-slate-200 bg-indigo-500 hover:bg-indigo-800
-                               text-white font-bold w-1/2 mx-auto py-2 flex justify-center"
+                     text-white font-bold w-1/2 mx-auto py-2 flex justify-center"
                 >
-                    {isLoading ? (
-                        <ClipLoader color="#ffffff" size={24} />
-                    ) : (
-                        <span>{id ? 'Atualizar' : 'Cadastrar'}</span>
-                    )}
+                    {isLoading
+                        ? <ClipLoader color="#ffffff" size={24} />
+                        : <span>{id ? 'Atualizar' : 'Cadastrar'}</span>
+                    }
                 </button>
+                {id && (
+                    <button
+                        type="button"
+                        onClick={() => navigate(`/apolices/deletar/${id}`)}
+                        className="rounded bg-red-500 hover:bg-red-700
+                   text-white font-bold w-1/2 mx-auto py-2"
+                    >
+                        Deletar
+                    </button>
+                )}
+
 
             </form>
         </div>

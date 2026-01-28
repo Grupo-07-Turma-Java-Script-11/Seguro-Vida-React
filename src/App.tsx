@@ -23,9 +23,9 @@ function App() {
             <Route path="/categorias/editar/:id" element={<FormCategoria />} />
             <Route path="/categorias/deletar/:id" element={<DeletarCategoria />} />
             <Route path='/apolices' element={<ListaApolices />} />
-            <Route path='/cadastrarapolice' element={<FormApolice />} />
-            <Route path='/deletarapolice/${id}' element={<DeletarApolice />} />
-            <Route path='/editarapolice/${id}' element={<FormApolice />} />
+            <Route path='/apolices/cadastrar' element={<FormApolice />} />
+            <Route path='/apolices/editar/:id' element={<FormApolice />} />
+            <Route path='/apolices/deletar/:id' element={<DeletarApolice />} />
           </Routes>
         </div>
       </BrowserRouter>

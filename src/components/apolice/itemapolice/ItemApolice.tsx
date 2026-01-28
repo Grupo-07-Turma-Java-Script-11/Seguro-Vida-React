@@ -17,7 +17,7 @@ function ItemApolice({ apolice }: ItemApoliceProps) {
             <td className="py-4 text-[18px]">{new Date(apolice.data_fim).toLocaleDateString('pt-BR')}</td>
             <td className="py-4 text-right relative">
                 <button
-                    onClick={() => navigate(`/editarapolice/${apolice.id}`)}
+                    onClick={() => navigate(`/apolices/editar/${apolice.id}`)}
                     className="text-[#19439E] font-medium flex items-center gap-1 ml-auto"
                 >Ver detalhes <span>{">"}</span></button>
             </td>

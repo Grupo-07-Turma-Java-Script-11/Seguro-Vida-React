@@ -32,10 +32,10 @@ function DeletarApolice() {
         setIsLoading(true)
 
         try {
-            await deletar(`/apolice/${id}`)
+            await deletar(`/apolices/${id}`)
             ToastAlerta('Apolice apagada com sucesso', 'sucesso')
         } catch (error: any) {
-            ToastAlerta('Erro ao deletar a postagem.', 'erro')
+            ToastAlerta('Erro ao deletar a apolice.', 'erro')
         }
 
         setIsLoading(false)
@@ -43,7 +43,7 @@ function DeletarApolice() {
     }
 
     function retornar() {
-        navigate("/postagens")
+        navigate("/apolices")
     }
 
 
