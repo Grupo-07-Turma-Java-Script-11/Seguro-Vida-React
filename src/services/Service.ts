@@ -22,7 +22,8 @@ export const cadastrarCategoria = async (categoria: Categoria): Promise<Categori
 }
 
 export const atualizarCategoria = async (categoria: Categoria): Promise<Categoria> => {
-  const response = await api.put("/categorias", categoria)
+ 
+  const response = await api.put(`/categorias/${categoria.id}`, categoria) 
   return response.data
 }
 
