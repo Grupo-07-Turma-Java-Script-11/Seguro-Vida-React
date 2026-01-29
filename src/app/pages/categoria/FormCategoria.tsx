@@ -52,25 +52,28 @@ function FormCategoria() {
   }
 
   return (
-    <div className="max-w-2xl mx-auto mt-10">
-      <div className="bg-white p-8 rounded-3xl shadow-xl border border-gray-100">
-        <h1 className="text-2xl font-bold text-[#002366] mb-6 flex items-center gap-2">
-          {id ? <Pencil className="text-blue-500" /> : <Plus className="text-blue-500" />}
-          {id ? "Editar Categoria" : "Nova Categoria"}
-        </h1>
 
-        <form onSubmit={salvarCategoria} className="space-y-5">
+    <div className="flex justify-center items-center min-h-[80vh] bg-gray-50 p-4">
+      <div className="w-full max-w-lg bg-white rounded-md shadow-2xl overflow-hidden border border-gray-100">
+        <div className="bg-blue-600 p-8 text-center">
+          <h1 className="text-3xl font-bold text-white uppercase tracking-wider">
+            {id ? "Editar Categoria" : "Nova Categoria"}
+          </h1>
+          <p className="text-blue-200 mt-2">Preencha as informações abaixo</p>
+        </div>
+
+        <form onSubmit={salvarCategoria} className="p-8 flex flex-col gap-5">
           <div>
             <label className="block text-sm font-bold text-gray-700 mb-2 ml-1">
               Nome da Categoria
             </label>
-            <input 
-              name="nome" 
-              value={categoria.nome} 
-              onChange={atualizarEstado} 
+            <input
+              name="nome"
+              value={categoria.nome}
+              onChange={atualizarEstado}
               placeholder="Ex: Vida Individual"
-              className="w-full px-4 py-3 rounded-xl border-2 border-gray-100 focus:border-blue-500 outline-none transition-all"
-              required 
+              className="w-full px-4 py-3 rounded-md border-2 border-gray-100 focus:border-blue-500 outline-none transition-all"
+              required
             />
           </div>
 
@@ -78,32 +81,30 @@ function FormCategoria() {
             <label className="block text-sm font-bold text-gray-700 mb-2 ml-1">
               Descrição
             </label>
-            <textarea 
-              name="descricao" 
-              value={categoria.descricao} 
-              onChange={atualizarEstado} 
+            <textarea
+              name="descricao"
+              value={categoria.descricao}
+              onChange={atualizarEstado}
               placeholder="Descreva os benefícios..."
-              className="w-full px-4 py-3 rounded-xl border-2 border-gray-100 focus:border-blue-500 outline-none transition-all h-32 resize-none"
-              required 
+              className="w-full px-4 py-3 rounded-md border-2 border-gray-100 focus:border-blue-500 outline-none transition-all h-32 resize-none"
+              required
             />
           </div>
 
-          <div className="flex gap-3 pt-4">
-            <button 
-              type="submit" 
-              disabled={isLoading}
-              className="flex-1 bg-blue-600 hover:bg-[#002366] text-white font-bold py-3 rounded-xl transition-all shadow-lg shadow-blue-100"
-            >
-              {isLoading ? <ClipLoader size={24} color="#fff" /> : id !== undefined ? "ATUALIZAR" : "CADASTRAR"}
-            </button>
-            <button 
-              type="button" 
-              onClick={() => navigate("/categorias")}
-              className="px-6 py-3 bg-gray-100 text-gray-600 font-bold rounded-xl hover:bg-gray-200 transition-all"
-            >
-              CANCELAR
-            </button>
-          </div>
+          <button
+            type="submit"
+            disabled={isLoading}
+            className="cursor-pointer bg-blue-600 hover:bg-blue-800 text-white font-bold py-4 rounded-md mt-4 transition-colors flex justify-center items-center"
+          >
+            {isLoading ? <ClipLoader size={24} color="#fff" /> : id !== undefined ? "ATUALIZAR" : "CADASTRAR"}
+          </button>
+          <button
+            type="button"
+            onClick={() => navigate("/categorias")}
+            className=" cursor-pointer text-gray-400 font-semibold text-sm hover:text-gray-600 transition-colors uppercase"
+          >
+            Cancelar e Voltar
+          </button>
         </form>
       </div>
     </div>

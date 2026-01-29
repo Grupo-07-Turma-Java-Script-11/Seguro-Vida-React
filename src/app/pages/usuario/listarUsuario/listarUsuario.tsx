@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import type Usuario from "../../../models/Usuario";
 import { buscar, deletar } from "../../../services/Service";
-import CardUsuario from "../cardUsuario/CardUsuario";
 import { ClipLoader } from "react-spinners";
 import { LinhaUsuario } from "../LinhaUsuario/LinhaUsuario";
 
@@ -41,17 +40,17 @@ function ListarUsuario() {
     buscarUsuarios();
   }, []);
 
-return (
+  return (
     <div className="container mx-auto p-6 min-h-screen bg-gray-50">
-      <h1 className="text-4xl text-center my-10 font-bold text-[#002366] uppercase tracking-tighter">
+      <h1 className="text-4xl text-center my-10 font-bold text-blue-600 uppercase tracking-tighter">
         Painel de Controle de Usuários
       </h1>
 
       <div className="flex justify-between items-center mb-10">
-         <p className="text-gray-500 font-medium">Total: {usuarios.length} usuários</p>
+        <p className="text-gray-500 font-medium">Total: {usuarios.length} usuários</p>
         <Link
           to="/cadastrarUsuario"
-          className="bg-[#4169E1] hover:bg-[#002366] text-white px-6 py-3 rounded-xl font-bold shadow-lg transition-all"
+          className="bg-blue-600 hover:bg-blue-800 text-white px-6 py-3 rounded-md font-bold shadow-lg transition-all"
         >
           + NOVO USUÁRIO
         </Link>
@@ -62,24 +61,24 @@ return (
           <ClipLoader color="#4169E1" size={50} />
         </div>
       ) : (
-        <div className="bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-200">
+        <div className="bg-white rounded-md shadow-xl overflow-hidden border border-gray-200">
           <table className="w-full text-left border-collapse">
-            <thead className="bg-[#002366] text-white">
+            <thead className="bg-blue-600 text-white">
               <tr>
                 <th className="px-6 py-4 uppercase text-sm font-bold">ID</th>
                 <th className="px-6 py-4 uppercase text-sm font-bold">Nome</th>
                 <th className="px-6 py-4 uppercase text-sm font-bold">E-mail</th>
                 <th className="px-6 py-4 uppercase text-sm font-bold">Nascimento</th>
-                <th className="px-6 py-4 uppercase text-sm font-bold text-right">Ações</th>
+                <th className="px-6 py-4 uppercase text-sm font-bold text-right px-8">Ações</th>
               </tr>
             </thead>
             <tbody>
               {usuarios.length > 0 ? (
                 usuarios.map((usuario) => (
-                  <LinhaUsuario 
-                    key={usuario.id} 
-                    usuario={usuario} 
-                    onDelete={deletarUsuario} 
+                  <LinhaUsuario
+                    key={usuario.id}
+                    usuario={usuario}
+                    onDelete={deletarUsuario}
                   />
                 ))
               ) : (

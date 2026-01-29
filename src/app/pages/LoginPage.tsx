@@ -7,7 +7,7 @@ import { Button } from "@/app/components/ui/button";
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const navigate=useNavigate();
+  const navigate = useNavigate();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -25,9 +25,6 @@ export default function LoginPage() {
               <Shield className="size-8 text-white" />
             </div>
             <h1 className="text-2xl font-bold text-foreground">Bem-vindo de volta</h1>
-            <p className="text-muted-foreground text-sm mt-2">
-              Acesse seu painel de segurado Vitalis
-            </p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-6">
@@ -66,7 +63,7 @@ export default function LoginPage() {
               />
             </div>
 
-            <Button 
+            <Button
               type="submit"
               onClick={() => navigate("/usuario")}
               className="w-full bg-blue-600 hover:bg-blue-700 text-white py-6 flex items-center justify-center gap-2 text-lg"

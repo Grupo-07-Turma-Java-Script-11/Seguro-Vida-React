@@ -49,7 +49,6 @@ export default function App() {
           <Route path="/apolices" element={<ListaApolices />} />
           <Route path="/apolices/cadastrar" element={<FormApolice />} />
           <Route path="/apolices/editar/:id" element={<FormApolice />} />
-          <Route path="/apolices/deletar/:id" element={<DeletarApolice />} />
 
           <Route path="/login" element={<LoginPage />} />
         </Route>
@@ -59,6 +58,6 @@ export default function App() {
       <Toaster />
     </BrowserRouter>
   </>
-    
+
   );
 }

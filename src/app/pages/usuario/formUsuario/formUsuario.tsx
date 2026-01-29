@@ -52,7 +52,7 @@ function FormUsuario() {
     try {
       if (id !== undefined) {
         // CORREÇÃO: Adicione o ID na URL para o método PUT
-        await atualizar(`/usuario/${id}`, usuario, setUsuario); 
+        await atualizar(`/usuario/${id}`, usuario, setUsuario);
         alert("Usuário atualizado com sucesso!");
       } else {
         await cadastrar("/usuario", usuario, setUsuario);
@@ -68,8 +68,8 @@ function FormUsuario() {
 
   return (
     <div className="flex justify-center items-center min-h-[80vh] bg-gray-50 p-4">
-      <div className="w-full max-w-lg bg-white rounded-3xl shadow-2xl overflow-hidden border border-gray-100">
-        <div className="bg-[#002366] p-8 text-center">
+      <div className="w-full max-w-lg bg-white rounded-md shadow-2xl overflow-hidden border border-gray-100">
+        <div className="bg-blue-600 p-8 text-center">
           <h1 className="text-3xl font-bold text-white uppercase tracking-wider">
             {id === undefined ? "Novo Registro" : "Editar Registro"}
           </h1>
@@ -88,7 +88,7 @@ function FormUsuario() {
               type="text"
               name="nome"
               placeholder="Ex: João da Silva"
-              className="w-full px-4 py-3 rounded-xl border-2 border-gray-100 bg-gray-50 focus:border-[#4169E1] focus:bg-white outline-none transition-all text-gray-700"
+              className="w-full px-4 py-3 rounded-md border-2 border-gray-100 bg-gray-50 focus:border-[#4169E1] focus:bg-white outline-none transition-all text-gray-700"
               value={usuario.nome}
               onChange={atualizarEstado}
               required
@@ -106,7 +106,7 @@ function FormUsuario() {
               type="email"
               name="usuario"
               placeholder="exemplo@email.com"
-              className="w-full px-4 py-3 rounded-xl border-2 border-gray-100 bg-gray-50 focus:border-[#4169E1] focus:bg-white outline-none transition-all text-gray-700"
+              className="w-full px-4 py-3 rounded-md border-2 border-gray-100 bg-gray-50 focus:border-[#4169E1] focus:bg-white outline-none transition-all text-gray-700"
               value={usuario.usuario}
               onChange={atualizarEstado}
               required
@@ -125,7 +125,7 @@ function FormUsuario() {
                 type="password"
                 name="senha"
                 placeholder="********"
-                className="w-full px-4 py-3 rounded-xl border-2 border-gray-100 bg-gray-50 focus:border-[#4169E1] focus:bg-white outline-none transition-all text-gray-700"
+                className="w-full px-4 py-3 rounded-md border-2 border-gray-100 bg-gray-50 focus:border-[#4169E1] focus:bg-white outline-none transition-all text-gray-700"
                 value={usuario.senha}
                 onChange={atualizarEstado}
                 required
@@ -143,7 +143,7 @@ function FormUsuario() {
             <input
               type="date"
               name="data_nascimento"
-              className="w-full px-4 py-3 rounded-xl border-2 border-gray-100 bg-gray-50 focus:border-[#4169E1] focus:bg-white outline-none transition-all text-gray-700"
+              className="w-full px-4 py-3 rounded-md border-2 border-gray-100 bg-gray-50 focus:border-[#4169E1] focus:bg-white outline-none transition-all text-gray-700"
               value={usuario.data_nascimento}
               onChange={atualizarEstado}
               required
@@ -152,7 +152,7 @@ function FormUsuario() {
 
           <button
             type="submit"
-            className="w-full mt-4 bg-[#4169E1] hover:bg-[#002366] text-white font-bold py-4 rounded-2xl shadow-lg hover:shadow-blue-200 transition-all duration-300 transform hover:-translate-y-1 flex justify-center items-center disabled:bg-gray-400"
+            className=" cursor-pointer w-full mt-4 bg-blue-600 hover:bg-blue-800 text-white font-bold py-4 rounded-md shadow-lg hover:shadow-blue-200 transition-all duration-300 transform hover:-translate-y-1 flex justify-center items-center disabled:bg-gray-400"
             disabled={isLoading}
           >
             {isLoading ? (
@@ -167,7 +167,7 @@ function FormUsuario() {
           <button
             type="button"
             onClick={retornar}
-            className="text-gray-400 font-semibold text-sm hover:text-gray-600 transition-colors uppercase"
+            className=" cursor-pointer text-gray-400 font-semibold text-sm hover:text-gray-600 transition-colors uppercase"
           >
             Cancelar e Voltar
           </button>

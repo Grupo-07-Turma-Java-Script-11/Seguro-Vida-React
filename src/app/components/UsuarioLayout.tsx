@@ -4,27 +4,20 @@ import { Outlet, Link } from "react-router-dom";
 
 // Você pode criar componentes pequenos aqui mesmo ou em arquivos separados
 const UsuarioHeader = () => (
-  <header className="bg-gray-800 text-white p-4 shadow-md">
+  <header className="bg-blue-600 text-white p-4 shadow-md">
     <div className="container mx-auto flex justify-between items-center">
-      {/* <Link to="/" className="font-bold text-xl text-blue-400">
-        <div className="p-2 bg-blue-600 rounded-lg group-hover:bg-blue-700 transition-colors">
-              <Shield className="size-5 text-white" />
-            </div>
-            <span className="text-xl font-semibold text-gray-900">Vitalis Seguros</span>
-      </Link> */}
-
       <Link to="/" className="flex items-center gap-2 group">
-        <div className="p-2 bg-blue-600 rounded-lg group-hover:bg-blue-700 transition-colors">
-            <Shield className="size-5 text-white" />
+        <div className="group p-2 bg-white border rounded-lg transition-colors group-hover:bg-blue-600 border-2 border-white">
+          <Shield className="size-5 text-blue-600 transition-colors group-hover:text-white" />
         </div>
         <span className="text-xl font-semibold text-white-900">Vitalis Seguros</span>
       </Link>
 
       <nav className="space-x-4">
-        <Link to="/usuario" className="hover:text-blue-300">Usuarios</Link>
-        <Link to="/apolices" className="hover:text-blue-300">Apólices</Link>
-        <Link to="/categorias" className="hover:text-blue-300">Categorias</Link>
-        <Link to="/" className="hover:text-blue-300">Sair</Link>
+        <Link to="/usuario" className="hover:text-blue-800">Usuarios</Link>
+        <Link to="/apolices" className="hover:text-blue-800">Apólices</Link>
+        <Link to="/categorias" className="hover:text-blue-800">Categorias</Link>
+        <Link to="/" className="hover:text-blue-800">Sair</Link>
       </nav>
     </div>
   </header>

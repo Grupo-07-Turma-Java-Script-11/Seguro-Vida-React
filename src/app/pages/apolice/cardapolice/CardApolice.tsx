@@ -4,12 +4,13 @@ import { Shield, Calendar, DollarSign } from "lucide-react";
 
 interface CardApoliceProps {
   apolice: Apolice;
+  onDelete: (id: number) => void;
 }
 
-function CardApolice({ apolice }: CardApoliceProps) {
+function CardApolice({ apolice, onDelete }: CardApoliceProps) {
   return (
-    <div className="bg-white border border-gray-200 rounded-3xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 flex flex-col justify-between transform hover:-translate-y-1">
-      <header className="bg-[#002366] px-6 py-4 flex justify-between items-center">
+    <div className="bg-white border border-gray-200 rounded-md overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 flex flex-col justify-between transform hover:-translate-y-1">
+      <header className="bg-blue-600 px-6 py-4 flex justify-between items-center">
         <h2 className="text-white font-bold text-lg tracking-tight uppercase">
           Nº {apolice.numero_apolice}
         </h2>
@@ -31,7 +32,7 @@ function CardApolice({ apolice }: CardApoliceProps) {
         <p className="flex items-center gap-2">
           <Calendar size={16} className="text-blue-500" />
           <span className="text-xs text-gray-500">
-            {apolice.data_inicio ? new Date(apolice.data_inicio).toLocaleDateString() : '--/--/----'} - 
+            {apolice.data_inicio ? new Date(apolice.data_inicio).toLocaleDateString() : '--/--/----'} -
             {apolice.data_fim ? new Date(apolice.data_fim).toLocaleDateString() : '--/--/----'}
           </span>
         </p>
@@ -44,12 +45,18 @@ function CardApolice({ apolice }: CardApoliceProps) {
         >
           EDITAR
         </Link>
-        <Link
+        <button
+          onClick={() => onDelete(apolice.id)}
+          className=" cursor-pointer flex-1 py-4 text-center font-bold text-red-500 hover:bg-red-50 transition-colors"
+        >
+          EXCLUIR
+        </button>
+        {/* <Link
           to={`/apolices/deletar/${apolice.id}`}
           className="flex-1 py-4 text-center font-bold text-red-500 hover:bg-red-50 transition-colors"
         >
           EXCLUIR
-        </Link>
+        </Link> */}
       </div>
     </div>
   );

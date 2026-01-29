@@ -26,9 +26,9 @@ export function LinhaUsuario({ usuario, onDelete }: LinhaProps) {
         </Link>
         <button
           onClick={() => onDelete(usuario.id)}
-          className="text-red-500 hover:text-red-700 inline-flex items-center gap-1 font-bold"
+          className="cursor-pointer text-red-500 hover:text-red-700 inline-flex items-center gap-1 font-bold"
         >
-        <Trash2 size={16} /> EXCLUIR
+          <Trash2 size={16} /> EXCLUIR
         </button>
       </td>
     </tr>
