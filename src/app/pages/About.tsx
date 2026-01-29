@@ -5,7 +5,7 @@ import { Card, CardContent } from "@/app/components/ui/card";
 export function About() {
   const stats = [
     { icon: Users, value: "500k+", label: "Clientes Ativos" },
-    { icon: Award, value: "25+", label: "Anos de Experiência" },
+    // { icon: Award, value: "25+", label: "Anos de Experiência" },
     { icon: Shield, value: "98%", label: "Satisfação" },
     { icon: TrendingUp, value: "R$ 2bi", label: "Em Indenizações Pagas" },
   ];
@@ -39,7 +39,7 @@ export function About() {
               Sobre a Vitalis Seguro
             </h1>
             <p className="text-xl text-gray-300 leading-relaxed">
-              Há mais de 25 anos, construímos uma história de confiança e proteção,
+              Desde 2025, construímos uma história de confiança e proteção,
               ajudando milhares de famílias brasileiras a garantirem seu futuro com
               tranquilidade e segurança.
             </p>
@@ -50,9 +50,9 @@ export function About() {
       {/* Stats Section */}
       <section className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-2 lg:grid-cols-3 gap-8">
             {stats.map((stat, index) => (
-              <div key={index} className="text-center">
+              <div key={index} className="flex flex-col items-center justify-center text-center">
                 <div className="inline-flex p-4 bg-blue-100 rounded-full mb-4">
                   <stat.icon className="size-8 text-blue-600" />
                 </div>
@@ -141,7 +141,7 @@ export function About() {
               Uma História de Confiança
             </h2>
             <p className="text-xl text-blue-100 mb-8 leading-relaxed">
-              Desde 1999, a Vitalis Seguro vem transformando a vida de milhares de famílias
+              Desde 2025, a Vitalis Seguro vem transformando a vida de milhares de famílias
               brasileiras. Nossa jornada começou com um objetivo simples: tornar o seguro
               de vida acessível e compreensível para todos.
             </p>

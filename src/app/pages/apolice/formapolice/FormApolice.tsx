@@ -143,15 +143,15 @@ function FormApolice() {
         </div>
 
         <form onSubmit={gerarNovaApolice} className="flex flex-col gap-4 bg-white p-8">
-          
+
           <div className="flex flex-col gap-1">
             <label className="font-semibold text-gray-700">Número da Apólice</label>
-            <input type="number" name="numero_apolice" value={apolice.numero_apolice} onChange={atualizarEstado} className="border-2 p-3 rounded-md focus:border-blue-500 outline-none" required />
+            <input type="text" name="numero_apolice" value={apolice.numero_apolice} onChange={atualizarEstado} className="border-2 p-3 rounded-md focus:border-blue-500 outline-none" required />
           </div>
 
           <div className="flex flex-col gap-1">
             <label className="font-semibold text-gray-700">Valor Segurado (R$)</label>
-            <input type="number" name="valor_segurado" value={apolice.valor_segurado} onChange={atualizarEstado} className="border-2 p-3 rounded-md focus:border-blue-500 outline-none" required />
+            <input type="text" name="valor_segurado" value={apolice.valor_segurado} onChange={atualizarEstado} className="border-2 p-3 rounded-md focus:border-blue-500 outline-none" required />
           </div>
 
           <div className="grid grid-cols-2 gap-4">
@@ -208,7 +208,7 @@ function FormApolice() {
           >
             {isLoading ? <ClipLoader size={24} color="#fff" /> : id !== undefined ? "ATUALIZAR" : "CADASTRAR"}
           </button>
-          
+
           <button type="button" onClick={retornar} className="text-gray-400 font-semibold text-sm hover:text-gray-600 uppercase">
             Cancelar e Voltar
           </button>

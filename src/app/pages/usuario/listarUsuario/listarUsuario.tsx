@@ -4,6 +4,7 @@ import type Usuario from "../../../models/Usuario";
 import { buscar, deletar } from "../../../services/Service";
 import { ClipLoader } from "react-spinners";
 import { LinhaUsuario } from "../LinhaUsuario/LinhaUsuario";
+import { ToastAlerta } from "../../../utils/ToastAlerta";
 
 function ListarUsuario() {
   const [usuarios, setUsuarios] = useState<Usuario[]>([]);
@@ -27,12 +28,12 @@ function ListarUsuario() {
     try {
       if (window.confirm("Tem certeza que deseja excluir este usuário?")) {
         await deletar(`/usuario/${id}`);
-        alert("Usuário removido com sucesso!");
+        ToastAlerta("Usuário removido com sucesso!", "sucesso");
         // Atualiza a lista após a exclusão
         buscarUsuarios();
       }
     } catch (error) {
-      alert("Erro ao excluir usuário.");
+      ToastAlerta("Erro ao excluir usuário.", "erro");
     }
   }
 

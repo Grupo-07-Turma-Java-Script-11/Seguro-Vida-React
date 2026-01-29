@@ -4,6 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { atualizar, buscar, cadastrar } from "../../services/Service";
 import { ClipLoader } from "react-spinners";
 import Categoria from '../../models/Categoria';
+import { ToastAlerta } from "../../utils/ToastAlerta";
 
 function FormCategoria() {
   const navigate = useNavigate();
@@ -37,16 +38,16 @@ function FormCategoria() {
       if (id !== undefined) {
         // CORREÇÃO AQUI: Adicionando o ID na URL para bater com o Insomnia
         await atualizar(`/categorias/${id}`, categoria, setCategoria);
-        alert("Categoria atualizada com sucesso!");
+        ToastAlerta("Categoria atualizada com sucesso!", "sucesso");
       } else {
         // No cadastro (POST), geralmente a rota é apenas /categorias
         await cadastrar(`/categorias`, categoria, setCategoria);
-        alert("Categoria cadastrada com sucesso!");
+        ToastAlerta("Categoria cadastrada com sucesso!", "sucesso");
       }
       navigate("/categorias");
     } catch (error) {
       console.error(error);
-      alert("Erro ao salvar a categoria. Verifique o console.");
+      ToastAlerta("Erro ao salvar a categoria. Verifique o console.", "erro");
     }
   }
 

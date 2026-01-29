@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import type { Categoria } from "../../models/Categoria";
 import { buscar, deletar } from "../../services/Service"; // Importe as funções genéricas
 import { FolderTree, Plus, Pencil, Trash2 } from "lucide-react";
 import { ClipLoader } from "react-spinners";
+import { ToastAlerta } from "../../utils/ToastAlerta";
+import Categoria from "../../models/Categoria";
 
 function ListaCategoria() {
   const [categorias, setCategorias] = useState<Categoria[]>([]);
@@ -28,10 +29,10 @@ function ListaCategoria() {
     if (window.confirm("Deseja realmente excluir esta categoria?")) {
       try {
         await deletar(`/categorias/${id}`);
-        alert("Categoria excluída!");
+        ToastAlerta("Categoria excluída!", "sucesso");
         buscarCategorias(); // Recarrega a lista
       } catch (error) {
-        alert("Erro ao excluir.");
+        ToastAlerta("Erro ao excluir.", "erro");
       }
     }
   }

@@ -2,8 +2,9 @@
 import { ChangeEvent, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Pencil, Plus } from "lucide-react";
-import { Categoria } from "../../models/Categoria";
 import { atualizar, buscar, cadastrar } from "../../../app/services/Service";
+import Categoria from "../../models/Categoria";
+import { ToastAlerta } from "../../utils/ToastAlerta";
 
 function FormCategoria() {
   const navigate = useNavigate();
@@ -39,14 +40,14 @@ function FormCategoria() {
         // Para atualizar, passamos o objeto inteiro. 
         // Verifique se sua API espera o ID na URL ou no corpo.
         await atualizar(`/categorias`, categoria, setCategoria);
-        alert("Categoria atualizada com sucesso!");
+        ToastAlerta("Categoria atualizada com sucesso!", "sucesso");
       } else {
         await cadastrar(`/categorias`, categoria, setCategoria);
-        alert("Categoria cadastrada com sucesso!");
+        ToastAlerta("Categoria cadastrada com sucesso!", "sucesso");
       }
       navigate("/categorias");
     } catch (error) {
-      alert("Erro ao salvar a categoria. Verifique os campos e tente novamente.");
+      ToastAlerta("Erro ao salvar a categoria. Verifique os campos e tente novamente.", "erro");
     }
   }
 
@@ -63,13 +64,13 @@ function FormCategoria() {
             <label className="block text-sm font-bold text-gray-700 mb-2 ml-1">
               Nome da Categoria
             </label>
-            <input 
-              name="nome" 
-              value={categoria.nome} 
-              onChange={atualizarEstado} 
+            <input
+              name="nome"
+              value={categoria.nome}
+              onChange={atualizarEstado}
               placeholder="Ex: Vida Individual"
               className="w-full px-4 py-3 rounded-xl border-2 border-gray-100 focus:border-blue-500 outline-none transition-all"
-              required 
+              required
             />
           </div>
 
@@ -77,25 +78,25 @@ function FormCategoria() {
             <label className="block text-sm font-bold text-gray-700 mb-2 ml-1">
               Descrição
             </label>
-            <textarea 
-              name="descricao" 
-              value={categoria.descricao} 
-              onChange={atualizarEstado} 
+            <textarea
+              name="descricao"
+              value={categoria.descricao}
+              onChange={atualizarEstado}
               placeholder="Descreva os benefícios desta categoria..."
               className="w-full px-4 py-3 rounded-xl border-2 border-gray-100 focus:border-blue-500 outline-none transition-all h-32 resize-none"
-              required 
+              required
             />
           </div>
 
           <div className="flex gap-3 pt-4">
-            <button 
-              type="submit" 
+            <button
+              type="submit"
               className="flex-1 bg-blue-600 hover:bg-[#002366] text-white font-bold py-3 rounded-xl transition-all shadow-lg shadow-blue-100"
             >
               SALVAR CATEGORIA
             </button>
-            <button 
-              type="button" 
+            <button
+              type="button"
               onClick={() => navigate("/categorias")}
               className="px-6 py-3 bg-gray-100 text-gray-600 font-bold rounded-xl hover:bg-gray-200 transition-all"
             >

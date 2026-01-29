@@ -3,11 +3,13 @@ import { useNavigate, useParams } from "react-router-dom";
 import { ClipLoader } from "react-spinners";
 import type Usuario from "../../../models/Usuario";
 import { buscar, cadastrar, atualizar } from "../../../services/Service";
+import { ToastAlerta } from "../../../utils/ToastAlerta";
 
 function FormUsuario() {
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [erroIdade, setErroIdade] = useState<string>("");
 
   const [usuario, setUsuario] = useState<Usuario>({
     id: 0,
@@ -17,11 +19,25 @@ function FormUsuario() {
     data_nascimento: "",
   });
 
+  function validarMaiorDeIdade(dataNascimento: string): boolean {
+    const hoje = new Date();
+    const nascimento = new Date(dataNascimento);
+
+    let idade = hoje.getFullYear() - nascimento.getFullYear();
+    const mes = hoje.getMonth() - nascimento.getMonth();
+
+    if (mes < 0 || (mes === 0 && hoje.getDate() < nascimento.getDate())) {
+      idade--;
+    }
+
+    return idade >= 18;
+  }
+
   async function buscarPorId(id: string) {
     try {
       await buscar(`/usuario/${id}`, setUsuario);
     } catch (error) {
-      alert("Erro ao buscar o usuário.");
+      ToastAlerta("Erro ao buscar o usuário.", "erro");
       retornar();
     }
   }
@@ -47,20 +63,26 @@ function FormUsuario() {
 
   async function cadastrarUsuario(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
+
+    if (!validarMaiorDeIdade(usuario.data_nascimento)) {
+      setErroIdade("O usuário deve ter no mínimo 18 anos.");
+      return;
+    }
+
     setIsLoading(true);
 
     try {
       if (id !== undefined) {
         // CORREÇÃO: Adicione o ID na URL para o método PUT
         await atualizar(`/usuario/${id}`, usuario, setUsuario);
-        alert("Usuário atualizado com sucesso!");
+        ToastAlerta("Usuário atualizado com sucesso!", "sucesso");
       } else {
         await cadastrar("/usuario", usuario, setUsuario);
-        alert("Usuário cadastrado com sucesso!");
+        ToastAlerta("Usuário cadastrado com sucesso!", "sucesso");
       }
       retornar();
     } catch (error) {
-      alert("Erro ao salvar o usuário.");
+      ToastAlerta("Erro ao salvar o usuário.", "erro");
     } finally {
       setIsLoading(false);
     }
@@ -143,11 +165,27 @@ function FormUsuario() {
             <input
               type="date"
               name="data_nascimento"
-              className="w-full px-4 py-3 rounded-md border-2 border-gray-100 bg-gray-50 focus:border-[#4169E1] focus:bg-white outline-none transition-all text-gray-700"
+              className={`w-full px-4 py-3 rounded-md border-2 bg-gray-50 outline-none transition-all text-gray-700
+                ${erroIdade ? "border-red-500" : "border-gray-100 focus:border-[#4169E1]"}
+              `}
               value={usuario.data_nascimento}
-              onChange={atualizarEstado}
+              onChange={(e) => {
+                atualizarEstado(e);
+
+                if (!validarMaiorDeIdade(e.target.value)) {
+                  setErroIdade("O usuário deve ter no mínimo 18 anos.");
+                } else {
+                  setErroIdade("");
+                }
+              }}
               required
             />
+            {erroIdade && (
+              <span className="text-sm text-red-500 font-medium ml-1">
+                {erroIdade}
+              </span>
+            )}
+
           </div>
 
           <button

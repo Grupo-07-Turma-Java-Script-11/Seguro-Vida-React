@@ -13,10 +13,10 @@ export default function Footer() {
               <div className="p-2 bg-blue-600 rounded-lg">
                 <Shield className="size-5 text-white" />
               </div>
-              <span className="text-xl font-semibold text-white">Vitalis Seguro</span>
+              <span className="text-xl font-semibold text-white">Vitalis Seguros</span>
             </div>
             <p className="text-sm leading-relaxed">
-              Protegendo sua família e garantindo seu futuro há mais de 25 anos.
+              Protegendo sua família e garantindo seu futuro.
             </p>
           </div>
 
@@ -79,7 +79,7 @@ export default function Footer() {
         </div>
 
         <div className="border-t border-gray-800 mt-8 pt-8 text-sm text-center">
-          <p>&copy; {new Date().getFullYear()} Vitalis Seguro. Todos os direitos reservados.</p>
+          <p>&copy; {new Date().getFullYear()} Vitalis Seguros. Todos os direitos reservados.</p>
         </div>
       </div>
     </footer>
