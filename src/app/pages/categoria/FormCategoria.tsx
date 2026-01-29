@@ -1,10 +1,9 @@
 // src/app/pages/categoria/FormCategoria.tsx
 import { ChangeEvent, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { Pencil, Plus } from "lucide-react";
-import { Categoria } from "../../models/Categoria";
 import { atualizar, buscar, cadastrar } from "../../services/Service";
 import { ClipLoader } from "react-spinners";
+import Categoria from '../../models/Categoria';
 
 function FormCategoria() {
   const navigate = useNavigate();
