@@ -52,13 +52,13 @@ export function Home() {
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
                 <Link to="/planos">
-                  <Button size="lg" className="bg-white text-blue-600 hover:bg-blue-50 w-full sm:w-auto">
+                  <Button size="lg" className="bg-white text-blue-600 hover:bg-blue-600 hover:text-white w-full sm:w-auto">
                     Ver Planos
                     <ArrowRight className="ml-2 size-5" />
                   </Button>
                 </Link>
                 <Link to="/contato">
-                  <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10 w-full sm:w-auto">
+                  <Button size="lg" variant="outline" className="border-white text-black hover:bg-blue-600 hover:text-white w-full sm:w-auto">
                     Falar com Especialista
                   </Button>
                 </Link>
@@ -155,7 +155,7 @@ export function Home() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link to="/contato">
               <Button size="lg" className="bg-white text-blue-600 hover:bg-blue-50 w-full sm:w-auto">
-                Solicitar Cotação Gratuita
+                Login
               </Button>
             </Link>
             <Link to="/planos">

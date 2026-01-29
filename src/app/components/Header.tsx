@@ -43,9 +43,9 @@ export default function Header() {
                 {item.label}
               </Link>
             ))}
-            <Link to="/contato">
+            <Link to="/login">
               <Button className="bg-blue-600 hover:bg-blue-700">
-                Solicitar Cotação
+                Login
               </Button>
             </Link>
           </div>

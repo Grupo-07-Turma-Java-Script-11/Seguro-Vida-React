@@ -4,10 +4,13 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Pencil, Plus } from "lucide-react";
 import { Categoria } from "../../models/Categoria";
 import { atualizar, buscar, cadastrar } from "../../services/Service";
+import { ClipLoader } from "react-spinners";
 
 function FormCategoria() {
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
+  const [isLoading, setIsLoading] = useState(false);
+
 
   const [categoria, setCategoria] = useState<Categoria>({
     id: 0,
@@ -88,9 +91,10 @@ function FormCategoria() {
           <div className="flex gap-3 pt-4">
             <button 
               type="submit" 
+              disabled={isLoading}
               className="flex-1 bg-blue-600 hover:bg-[#002366] text-white font-bold py-3 rounded-xl transition-all shadow-lg shadow-blue-100"
             >
-              {id ? "SALVAR ALTERAÇÕES" : "CADASTRAR CATEGORIA"}
+              {isLoading ? <ClipLoader size={24} color="#fff" /> : id !== undefined ? "ATUALIZAR" : "CADASTRAR"}
             </button>
             <button 
               type="button" 

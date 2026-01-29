@@ -1,90 +1,134 @@
-import { ChangeEvent, useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { atualizar, buscar, cadastrar } from "../../../services/Service";
-import { ToastAlerta } from "../../../utils/ToastAlerta";
-import { ClipLoader } from "react-spinners";
-import Apolice from "../../../models/Apolice";
-import Categoria from "../../../models/Categoria";
+import { useEffect, useState, type ChangeEvent, type FormEvent } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import type Apolice from '../../../models/Apolice';
+import { atualizar, buscar, cadastrar } from '../../../services/Service';
+import { ToastAlerta } from '../../../utils/ToastAlerta';
+import { ClipLoader } from 'react-spinners';
+import Categoria from '../../../models/Categoria';
 
 function FormApolice() {
-  const navigate = useNavigate();
-  const { id } = useParams<{ id: string }>();
 
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [categorias, setCategorias] = useState<Categoria[]>([]);
-  const [categoria, setCategoria] = useState<Categoria>({ id: 0, nome: "", descricao: "" });
+    const navigate = useNavigate();
+    const { id } = useParams<{ id: string }>();
 
-  const [apolice, setApolice] = useState<Apolice>({
-    id: 0,
-    numero_apolice: 0,
-    valor_segurado: 0,
-    data_inicio: "",
-    data_fim: "",
-    categoria: null,
-  });
+    const [isLoading, setIsLoading] = useState(false);
 
-  async function buscarApolicePorId(id: string) {
-    await buscar(`/apolices/${id}`, setApolice);
-  }
+    const [categorias, setCategorias] = useState<Categoria[]>([]);
+    const [categoriaSelecionada, setCategoriaSelecionada] = useState<Categoria | null>(null);
 
-  async function buscarCategorias() {
-    await buscar("/categorias", setCategorias);
-  }
-
-  useEffect(() => {
-    buscarCategorias();
-    if (id !== undefined) {
-      buscarApolicePorId(id);
-    }
-  }, [id]);
-
-  useEffect(() => {
-    setApolice({
-      ...apolice,
-      categoria: categoria,
+    const [apolice, setApolice] = useState<Apolice>({
+        id: 0,
+        numero_apolice: 0,
+        valor_segurado: 0,
+        data_inicio: '',
+        data_fim: '',
+        categoria: null,
     });
-  }, [categoria]);
 
-  function atualizarEstado(e: ChangeEvent<HTMLInputElement>) {
-    setApolice({
-      ...apolice,
-      [e.target.name]: e.target.value,
-    });
-  }
+    /* =======================
+       BUSCAS
+    ======================= */
 
-  async function buscarCategoriaPorId(id: string) {
-    await buscar(`/categorias/${id}`, setCategoria);
-  }
-
-  async function gerarNovaApolice(e: ChangeEvent<HTMLFormElement>) {
-    e.preventDefault();
-    setIsLoading(true);
-
-    if (id !== undefined) {
-      try {
-        await atualizar(`/apolices`, apolice, setApolice);
-        ToastAlerta("Apólice atualizada com sucesso", "sucesso");
-        retornar();
-      } catch (error) {
-        ToastAlerta("Erro ao atualizar a Apólice", "erro");
-      }
-    } else {
-      try {
-        await cadastrar(`/apolices`, apolice, setApolice);
-        ToastAlerta("Apólice cadastrada com sucesso", "sucesso");
-        retornar();
-      } catch (error) {
-        ToastAlerta("Erro ao cadastrar a Apólice", "erro");
-      }
+    async function buscarCategorias() {
+        try {
+            await buscar('/categorias', setCategorias);
+        } catch {
+            ToastAlerta('Erro ao buscar categorias', 'erro');
+        }
     }
 
-    setIsLoading(false);
-  }
+    async function buscarApolicePorId(id: string) {
+        try {
+            await buscar(`/apolices/${id}`, (data: Apolice) => {
+                setApolice({
+                    ...data,
+                    data_inicio: data.data_inicio?.split('T')[0],
+                    data_fim: data.data_fim?.split('T')[0],
+                });
 
-  function retornar() {
-    navigate("/apolices");
-  }
+                setCategoriaSelecionada(data.categoria);
+            });
+        } catch {
+            ToastAlerta('Erro ao buscar apólice', 'erro');
+        }
+    }
 
+    useEffect(() => {
+        buscarCategorias();
+
+        if (id) {
+            buscarApolicePorId(id);
+        }
+    }, [id]);
+
+    /* =======================
+       HANDLERS
+    ======================= */
+
+    function atualizarEstado(e: ChangeEvent<HTMLInputElement>) {
+        const { name, value } = e.target;
+
+        setApolice({
+            ...apolice,
+            [name]: name === 'numero_apolice' || name === 'valor_segurado'
+                ? Number(value)
+                : value,
+        });
+    }
+
+    function selecionarCategoria(e: ChangeEvent<HTMLSelectElement>) {
+        const categoria = categorias.find(
+            c => c.id === Number(e.target.value)
+        ) || null;
+
+        setCategoriaSelecionada(categoria);
+
+        setApolice({
+            ...apolice,
+            categoria: categoria,
+        });
+    }
+
+    /* =======================
+       SUBMIT
+    ======================= */
+
+    async function gerarNovaApolice(e: FormEvent<HTMLFormElement>) {
+        e.preventDefault();
+
+        if (!categoriaSelecionada) {
+            ToastAlerta('Selecione uma categoria', 'erro');
+            return;
+        }
+
+        setIsLoading(true);
+
+        try {
+            const apoliceEnvio: Apolice = {
+                ...apolice,
+                categoria: categoriaSelecionada,
+            };
+
+            if (id) {
+                await atualizar(`/apolices/${id}`, apoliceEnvio, setApolice);
+                ToastAlerta('Apólice atualizada com sucesso!', 'sucesso');
+            } else {
+                await cadastrar('/apolices', apoliceEnvio, setApolice);
+                ToastAlerta('Apólice cadastrada com sucesso!', 'sucesso');
+            }
+
+            navigate('/apolices');
+
+        } catch {
+            ToastAlerta('Erro ao salvar a apólice', 'erro');
+        } finally {
+            setIsLoading(false);
+        }
+    }
+
+    /* =======================
+       RENDER
+    ======================= */
   return (
     <div className="container flex flex-col mx-auto items-center py-10">
       <h1 className="text-4xl font-bold text-[#002366] mb-8">
@@ -95,7 +139,7 @@ function FormApolice() {
         <div className="flex flex-col gap-1">
           <label htmlFor="numero_apolice" className="font-semibold text-gray-700">Número da Apólice</label>
           <input
-            type="number"
+            type="text"
             name="numero_apolice"
             value={apolice.numero_apolice}
             onChange={atualizarEstado}
@@ -107,7 +151,7 @@ function FormApolice() {
         <div className="flex flex-col gap-1">
           <label htmlFor="valor_segurado" className="font-semibold text-gray-700">Valor Segurado (R$)</label>
           <input
-            type="number"
+            type="text"
             name="valor_segurado"
             value={apolice.valor_segurado}
             onChange={atualizarEstado}
@@ -132,13 +176,18 @@ function FormApolice() {
           <select
             name="categoria"
             className="border-2 border-slate-200 p-3 rounded-xl focus:border-[#4169E1] outline-none"
-            onChange={(e) => buscarCategoriaPorId(e.target.value)}
-            value={apolice.categoria?.id || ""}
+            value={categoriaSelecionada?.id ?? ''}
+            onChange={selecionarCategoria}
             required
-          >
-            <option value="" disabled>Selecione uma categoria</option>
-            {categorias.map((cat) => (
-              <option key={cat.id} value={cat.id}>{cat.nome}</option>
+            >
+              <option value="" disabled>
+                Selecione uma categoria
+              </option>
+
+              {categorias.map(categoria => (
+              <option key={categoria.id} value={categoria.id}>
+              {categoria.nome}
+              </option>
             ))}
           </select>
         </div>

@@ -16,10 +16,13 @@ import FormCategoria from "./pages/categoria/FormCategoria";
 import FormApolice from "./pages/apolice/formapolice/FormApolice";
 import ListaApolices from "./pages/apolice/listaApolices/ListaApolices";
 import DeletarApolice from "./pages/apolice/deletarapolice/DeletarApolice";
+import { ToastContainer } from "react-toastify";
+import LoginPage from "./pages/LoginPage";
 
 
 export default function App() {
-  return (
+  return (<>
+    <ToastContainer />
     <BrowserRouter>
       <Routes>
         {/* GRUPO PÚBLICO: Header Branco (Vitalis Seguros) e Footer */}
@@ -48,11 +51,14 @@ export default function App() {
           <Route path="/apolices/editar/:id" element={<FormApolice />} />
           <Route path="/apolices/deletar/:id" element={<DeletarApolice />} />
 
+          <Route path="/login" element={<LoginPage />} />
         </Route>
 
         <Route path="*" element={<NotFound />} />
       </Routes>
       <Toaster />
     </BrowserRouter>
+  </>
+    
   );
 }

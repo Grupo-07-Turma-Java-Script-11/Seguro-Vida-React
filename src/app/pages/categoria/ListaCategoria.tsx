@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import type { Categoria } from "../../models/Categoria";
 import { buscar, deletar } from "../../services/Service"; // Importe as funções genéricas
 import { FolderTree, Plus, Pencil, Trash2 } from "lucide-react";
+import { ClipLoader } from "react-spinners";
 
 function ListaCategoria() {
   const [categorias, setCategorias] = useState<Categoria[]>([]);
@@ -36,23 +37,34 @@ function ListaCategoria() {
   }
 
   return (
-    <div className="container mx-auto p-6">
-      <div className="flex justify-between items-center mb-8">
-        <h1 className="text-3xl font-bold text-[#002366] flex items-center gap-2">
-          <FolderTree className="text-blue-500" /> Categorias
-        </h1>
-        <Link to="/categorias/cadastrar" className="bg-[#4169E1] hover:bg-[#002366] text-white px-5 py-2 rounded-xl font-bold flex items-center gap-2 transition-all">
-          <Plus size={20} /> NOVA CATEGORIA
+
+    <div className="container mx-auto p-6 min-h-screen bg-gray-50">
+      <h1 className="text-4xl text-center my-10 font-bold text-[#002366] uppercase tracking-tighter">
+        Painel de Controle de Categorias
+      </h1>
+
+      <div className="flex justify-between items-center mb-10">
+         <p className="text-gray-500 font-medium">Total: {categorias.length} categorias</p>
+        <Link
+          to="/categorias/cadastrar"
+          className="bg-[#4169E1] hover:bg-[#002366] text-white px-6 py-3 rounded-xl font-bold shadow-lg transition-all"
+        >
+          + NOVA CATEGORIA
         </Link>
       </div>
 
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-        <table className="w-full text-left">
-          <thead className="bg-gray-50 text-gray-600">
+        {isLoading ? (
+        <div className="flex justify-center items-center py-20">
+          <ClipLoader color="#4169E1" size={50} />
+        </div>
+      ) : (
+      <div className="bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-200">
+          <table className="w-full text-left border-collapse">
+            <thead className="bg-[#002366] text-white">
             <tr>
-              <th className="px-6 py-4 font-bold uppercase text-xs">Nome</th>
-              <th className="px-6 py-4 font-bold uppercase text-xs">Descrição</th>
-              <th className="px-6 py-4 font-bold uppercase text-xs text-right">Ações</th>
+              <th className="px-6 py-4 uppercase text-sm font-bold">Nome</th>
+              <th className="px-6 py-4 uppercase text-sm font-bold">Descrição</th>
+              <th className="px-6 py-4 uppercase text-sm font-bold text-right">Ações</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-100">
@@ -73,7 +85,8 @@ function ListaCategoria() {
           </tbody>
         </table>
       </div>
-    </div>
+      )}
+      </div>
   );
 }
 

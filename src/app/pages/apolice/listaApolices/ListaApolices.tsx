@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import type Apolice from '../../../models/Apolice';
 import { buscar } from '../../../services/Service';
-import { SyncLoader } from 'react-spinners';
+import { ClipLoader, SyncLoader } from 'react-spinners';
 import CardApolice from '../cardapolice/CardApolice';
 
 function ListaApolices() {
@@ -30,10 +30,11 @@ function ListaApolices() {
         Gestão de Apólices
       </h1>
 
-      <div className="flex justify-center mb-10">
+        <div className="flex justify-between items-center mb-10">
+         <p className="text-gray-500 font-medium">Total: {apolices.length} apolices</p>
         <Link
           to="/apolices/cadastrar"
-          className="bg-[#4169E1] hover:bg-[#002366] text-white px-10 py-4 rounded-2xl font-bold shadow-xl transition-all transform hover:-translate-y-1"
+          className="bg-[#4169E1] hover:bg-[#002366] text-white px-6 py-3 rounded-xl font-bold shadow-lg transition-all"
         >
           + NOVA APÓLICE
         </Link>
@@ -41,7 +42,7 @@ function ListaApolices() {
 
       {isLoading ? (
         <div className="flex justify-center items-center py-20">
-          <SyncLoader color="#4169E1" />
+          <ClipLoader color="#4169E1" size={50} />
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
