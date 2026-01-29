@@ -100,7 +100,7 @@ function FormUsuario() {
               htmlFor="usuario"
               className="text-sm font-bold text-gray-600 ml-1"
             >
-              E-mail institucional
+              E-mail
             </label>
             <input
               type="email"

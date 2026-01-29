@@ -33,6 +33,8 @@ export default function App() {
           <Route path="/contato" element={<Contact />} />
         </Route>
 
+        <Route path="/login" element={<LoginPage />} />
+
         {/* GRUPO ADMINISTRATIVO: Header Escuro (UsuarioLayout) */}
         <Route element={<UsuarioLayout />}>
           {/* Rotas de Usuário */}
@@ -50,7 +52,6 @@ export default function App() {
           <Route path="/apolices/cadastrar" element={<FormApolice />} />
           <Route path="/apolices/editar/:id" element={<FormApolice />} />
 
-          <Route path="/login" element={<LoginPage />} />
         </Route>
 
         <Route path="*" element={<NotFound />} />
