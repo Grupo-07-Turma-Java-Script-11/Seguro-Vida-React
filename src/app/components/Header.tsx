@@ -3,7 +3,7 @@ import { Link, useLocation } from "react-router";
 import { Shield, Menu, X } from "lucide-react";
 import { Button } from "@/app/components/ui/button";
 
-export function Header() {
+export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const location = useLocation();
 
