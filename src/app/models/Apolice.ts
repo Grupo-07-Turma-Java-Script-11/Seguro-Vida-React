@@ -1,4 +1,5 @@
-import type { Categoria } from "./Categoria";
+import type Categoria from "./Categoria";
+import type  Usuario  from "./Usuario";
 
 export default interface Apolice {
     id: number;
@@ -7,4 +8,5 @@ export default interface Apolice {
     data_inicio: string;
     data_fim: string;
     categoria: Categoria | null;
+    usuario: Usuario | null;
 }

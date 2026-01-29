@@ -1,20 +1,24 @@
 import { useEffect, useState, type ChangeEvent, type FormEvent } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import Select from 'react-select'; // Importação do react-select
 import type Apolice from '../../../models/Apolice';
 import { atualizar, buscar, cadastrar } from '../../../services/Service';
 import { ToastAlerta } from '../../../utils/ToastAlerta';
 import { ClipLoader } from 'react-spinners';
 import Categoria from '../../../models/Categoria';
+import Usuario from '../../../models/Usuario';
 
 function FormApolice() {
-
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
 
   const [isLoading, setIsLoading] = useState(false);
 
+  // Estados
   const [categorias, setCategorias] = useState<Categoria[]>([]);
   const [categoriaSelecionada, setCategoriaSelecionada] = useState<Categoria | null>(null);
+  const [usuarios, setUsuarios] = useState<Usuario[]>([]);
+  const [usuarioSelecionado, setUsuarioSelecionado] = useState<Usuario | null>(null);
 
   const [apolice, setApolice] = useState<Apolice>({
     id: 0,
@@ -23,13 +27,28 @@ function FormApolice() {
     data_inicio: '',
     data_fim: '',
     categoria: null,
+    usuario: null,
   });
+
+  // Mapeamento de usuários para o formato do React-Select
+  const optionsUsuarios = usuarios.map(user => ({
+    value: user.id,
+    label: user.nome
+  }));
 
   async function buscarCategorias() {
     try {
       await buscar('/categorias', setCategorias);
     } catch {
       ToastAlerta('Erro ao buscar categorias', 'erro');
+    }
+  }
+
+  async function buscarUsuarios() {
+    try {
+      await buscar('/usuario', setUsuarios); // Verifique se o endpoint está correto
+    } catch {
+      ToastAlerta('Erro ao buscar usuários', 'erro');
     }
   }
 
@@ -41,8 +60,8 @@ function FormApolice() {
           data_inicio: data.data_inicio?.split('T')[0],
           data_fim: data.data_fim?.split('T')[0],
         });
-
         setCategoriaSelecionada(data.categoria);
+        setUsuarioSelecionado(data.usuario || null);
       });
     } catch {
       ToastAlerta('Erro ao buscar apólice', 'erro');
@@ -51,15 +70,12 @@ function FormApolice() {
 
   useEffect(() => {
     buscarCategorias();
-
-    if (id) {
-      buscarApolicePorId(id);
-    }
+    buscarUsuarios();
+    if (id) buscarApolicePorId(id);
   }, [id]);
 
   function atualizarEstado(e: ChangeEvent<HTMLInputElement>) {
     const { name, value } = e.target;
-
     setApolice({
       ...apolice,
       [name]: name === 'numero_apolice' || name === 'valor_segurado'
@@ -69,16 +85,16 @@ function FormApolice() {
   }
 
   function selecionarCategoria(e: ChangeEvent<HTMLSelectElement>) {
-    const categoria = categorias.find(
-      c => c.id === Number(e.target.value)
-    ) || null;
-
+    const categoria = categorias.find(c => c.id === Number(e.target.value)) || null;
     setCategoriaSelecionada(categoria);
+    setApolice({ ...apolice, categoria });
+  }
 
-    setApolice({
-      ...apolice,
-      categoria: categoria,
-    });
+  // Função para o React-Select
+  function handleSelectUsuario(selectedOption: any) {
+    const usuario = usuarios.find(u => u.id === selectedOption.value) || null;
+    setUsuarioSelecionado(usuario);
+    setApolice({ ...apolice, usuario });
   }
 
   function retornar() {
@@ -88,19 +104,20 @@ function FormApolice() {
   async function gerarNovaApolice(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    if (!categoriaSelecionada) {
-      ToastAlerta('Selecione uma categoria', 'erro');
+    if (!categoriaSelecionada || !usuarioSelecionado) {
+      ToastAlerta('Selecione uma categoria e um usuário', 'erro');
       return;
     }
 
     setIsLoading(true);
 
-    try {
-      const apoliceEnvio: Apolice = {
-        ...apolice,
-        categoria: categoriaSelecionada,
-      };
+    const apoliceEnvio: Apolice = {
+      ...apolice,
+      categoria: categoriaSelecionada,
+      usuario: usuarioSelecionado,
+    };
 
+    try {
       if (id) {
         await atualizar(`/apolices/${id}`, apoliceEnvio, setApolice);
         ToastAlerta('Apólice atualizada com sucesso!', 'sucesso');
@@ -108,9 +125,7 @@ function FormApolice() {
         await cadastrar('/apolices', apoliceEnvio, setApolice);
         ToastAlerta('Apólice cadastrada com sucesso!', 'sucesso');
       }
-
       navigate('/apolices');
-
     } catch {
       ToastAlerta('Erro ao salvar a apólice', 'erro');
     } finally {
@@ -125,78 +140,76 @@ function FormApolice() {
           <h1 className="text-3xl font-bold text-white uppercase tracking-wider">
             {id === undefined ? "Nova Apólice" : "Editar Apólice"}
           </h1>
-          <p className="text-blue-200 mt-2">Preencha as informações abaixo</p>
         </div>
 
-        <form onSubmit={gerarNovaApolice} className="flex flex-col w-full max-w-lg gap-4 bg-white p-8 rounded-md shadow-lg">
+        <form onSubmit={gerarNovaApolice} className="flex flex-col gap-4 bg-white p-8">
+          
           <div className="flex flex-col gap-1">
-            <label htmlFor="numero_apolice" className="font-semibold text-gray-700">Número da Apólice</label>
-            <input
-              type="text"
-              name="numero_apolice"
-              value={apolice.numero_apolice}
-              onChange={atualizarEstado}
-              className="border-2 border-slate-200 p-3 rounded-md focus:border-[#4169E1] outline-none"
-              required
-            />
+            <label className="font-semibold text-gray-700">Número da Apólice</label>
+            <input type="number" name="numero_apolice" value={apolice.numero_apolice} onChange={atualizarEstado} className="border-2 p-3 rounded-md focus:border-blue-500 outline-none" required />
           </div>
 
           <div className="flex flex-col gap-1">
-            <label htmlFor="valor_segurado" className="font-semibold text-gray-700">Valor Segurado (R$)</label>
-            <input
-              type="text"
-              name="valor_segurado"
-              value={apolice.valor_segurado}
-              onChange={atualizarEstado}
-              className="border-2 border-slate-200 p-3 rounded-xl focus:border-[#4169E1] outline-none"
-              required
-            />
+            <label className="font-semibold text-gray-700">Valor Segurado (R$)</label>
+            <input type="number" name="valor_segurado" value={apolice.valor_segurado} onChange={atualizarEstado} className="border-2 p-3 rounded-md focus:border-blue-500 outline-none" required />
           </div>
 
           <div className="grid grid-cols-2 gap-4">
             <div className="flex flex-col gap-1">
               <label className="font-semibold text-gray-700">Data Início</label>
-              <input type="date" name="data_inicio" value={apolice.data_inicio} onChange={atualizarEstado} className="border-2 border-slate-200 p-3 rounded-md" required />
+              <input type="date" name="data_inicio" value={apolice.data_inicio} onChange={atualizarEstado} className="border-2 p-3 rounded-md" required />
             </div>
             <div className="flex flex-col gap-1">
               <label className="font-semibold text-gray-700">Data Fim</label>
-              <input type="date" name="data_fim" value={apolice.data_fim} onChange={atualizarEstado} className="border-2 border-slate-200 p-3 rounded-md" required />
+              <input type="date" name="data_fim" value={apolice.data_fim} onChange={atualizarEstado} className="border-2 p-3 rounded-md" required />
             </div>
           </div>
 
           <div className="flex flex-col gap-1">
             <label className="font-semibold text-gray-700">Categoria</label>
             <select
-              name="categoria"
-              className="cursor-pointer border-2 border-slate-200 p-3 rounded-md focus:border-[#4169E1] outline-none"
+              className="border-2 p-3 rounded-md outline-none focus:border-blue-500"
               value={categoriaSelecionada?.id ?? ''}
               onChange={selecionarCategoria}
               required
             >
-              <option value="" disabled>
-                Selecione uma categoria
-              </option>
-
-              {categorias.map(categoria => (
-                <option key={categoria.id} value={categoria.id}>
-                  {categoria.nome}
-                </option>
+              <option value="" disabled>Selecione uma categoria</option>
+              {categorias.map(cat => (
+                <option key={cat.id} value={cat.id}>{cat.nome}</option>
               ))}
             </select>
           </div>
 
+          <div className="flex flex-col gap-1">
+            <label className="font-semibold text-gray-700">Usuário (Pesquisar)</label>
+            <Select
+              options={optionsUsuarios}
+              onChange={handleSelectUsuario}
+              value={usuarioSelecionado ? { value: usuarioSelecionado.id, label: usuarioSelecionado.nome } : null}
+              placeholder="Digite para buscar..."
+              noOptionsMessage={() => "Usuário não encontrado"}
+              isClearable
+              styles={{
+                control: (base) => ({
+                  ...base,
+                  borderColor: '#e2e8f0',
+                  borderWidth: '2px',
+                  padding: '2px',
+                  '&:hover': { borderColor: '#3b82f6' }
+                })
+              }}
+            />
+          </div>
+
           <button
             type="submit"
-            disabled={isLoading || !apolice.categoria?.id}
-            className="cursor-pointer bg-blue-600 hover:bg-blue-800 text-white font-bold py-4 rounded-md mt-4 transition-colors flex justify-center items-center"
+            disabled={isLoading || !categoriaSelecionada || !usuarioSelecionado}
+            className="bg-blue-600 hover:bg-blue-800 text-white font-bold py-4 rounded-md mt-4 transition-colors flex justify-center"
           >
             {isLoading ? <ClipLoader size={24} color="#fff" /> : id !== undefined ? "ATUALIZAR" : "CADASTRAR"}
           </button>
-          <button
-            type="button"
-            onClick={retornar}
-            className=" cursor-pointer text-gray-400 font-semibold text-sm hover:text-gray-600 transition-colors uppercase"
-          >
+          
+          <button type="button" onClick={retornar} className="text-gray-400 font-semibold text-sm hover:text-gray-600 uppercase">
             Cancelar e Voltar
           </button>
         </form>

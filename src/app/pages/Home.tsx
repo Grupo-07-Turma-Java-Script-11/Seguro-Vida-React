@@ -66,7 +66,11 @@ export function Home() {
             </div>
             <div className="hidden lg:block">
               <img
-                src="https://images.unsplash.com/photo-1618218168350-6e7c81151b64?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxsaWZlJTIwaW5zdXJhbmNlJTIwY29uc3VsdGF0aW9uJTIwcHJvZmVzc2lvbmFsfGVufDF8fHx8MTc2OTYxOTU2NHww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
+                // src="https://ik.imagekit.io/g3sqiqtmtf/familia1.png"
+                // src="https://ik.imagekit.io/g3sqiqtmtf/familia2.png"
+                // src="https://ik.imagekit.io/g3sqiqtmtf/familia3.png"
+                src="https://ik.imagekit.io/g3sqiqtmtf/familia4.jpg"
+                // src="https://ik.imagekit.io/g3sqiqtmtf/familia5.png"
                 alt="Consultoria de seguro de vida"
                 className="rounded-2xl shadow-2xl"
               />

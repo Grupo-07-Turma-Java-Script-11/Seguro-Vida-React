@@ -4,7 +4,7 @@ import { Outlet, Link } from "react-router-dom";
 
 // Você pode criar componentes pequenos aqui mesmo ou em arquivos separados
 const UsuarioHeader = () => (
-  <header className="bg-blue-600 text-white p-4 shadow-md">
+  <header className="bg-blue-600 text-white p-4 shadow-md fixed w-full" >
     <div className="container mx-auto flex justify-between items-center">
       <Link to="/" className="flex items-center gap-2 group">
         <div className="group p-2 bg-white border rounded-lg transition-colors group-hover:bg-blue-600 border-2 border-white">

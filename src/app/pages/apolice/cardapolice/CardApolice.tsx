@@ -19,9 +19,14 @@ function CardApolice({ apolice, onDelete }: CardApoliceProps) {
 
       <div className="px-6 py-6 text-gray-700 bg-slate-50 flex-1 flex flex-col gap-3">
         <p className="flex items-center gap-2">
+          <span className="font-bold text-[#4169E1]">Usuário:</span>
+          <span className="text-gray-600">{apolice.usuario?.nome || 'Não informada'}</span>
+        </p>
+        <p className="flex items-center gap-2">
           <span className="font-bold text-[#4169E1]">Categoria:</span>
           <span className="text-gray-600">{apolice.categoria?.nome || 'Não informada'}</span>
         </p>
+
         <p className="flex items-center gap-2">
           <DollarSign size={16} className="text-green-600" />
           <span className="font-bold text-[#4169E1]">Valor:</span>
