@@ -34,11 +34,10 @@ export default function Header() {
               <Link
                 key={item.path}
                 to={item.path}
-                className={`text-sm font-medium transition-colors ${
-                  isActive(item.path)
+                className={`text-sm font-medium transition-colors ${isActive(item.path)
                     ? "text-blue-600"
                     : "text-gray-600 hover:text-gray-900"
-                }`}
+                  }`}
               >
                 {item.label}
               </Link>
@@ -67,11 +66,10 @@ export default function Header() {
                 key={item.path}
                 to={item.path}
                 onClick={() => setMobileMenuOpen(false)}
-                className={`block py-2 text-sm font-medium ${
-                  isActive(item.path)
+                className={`block py-2 text-sm font-medium ${isActive(item.path)
                     ? "text-blue-600"
                     : "text-gray-600 hover:text-gray-900"
-                }`}
+                  }`}
               >
                 {item.label}
               </Link>
